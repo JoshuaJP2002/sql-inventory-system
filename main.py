@@ -34,24 +34,33 @@ def add_product():
 
 # Function to update a product
 def update_product():
-    product_id = int(input("Enter product ID to update: "))
-    new_price = float(input("Enter new product price: "))
 
-    cursor.execute("UPDATE products SET price = ? WHERE id = ?", (new_price, product_id))
+    try:
+        product_id = int(input("Enter product ID to update: "))
+        new_price = float(input("Enter new product price: "))
 
-    connection.commit()
+        cursor.execute("UPDATE products SET price = ? WHERE product_id = ?", (new_price, product_id))
 
-    print("Product updated successfully!")
+        connection.commit()
+
+        print("Product updated successfully!")
+        
+    except ValueError:
+        print("Invalid input. Please enter correct values.")
 
 # Function to delete a product
 def delete_product():
-    product_id = int(input("Enter product ID to delete: "))
 
-    cursor.execute("DELETE FROM products WHERE id = ?", (product_id,))
+    try:
+        product_id = int(input("Enter product ID to delete: "))
 
-    connection.commit()
+        cursor.execute("DELETE FROM products WHERE product_id = ?", (product_id,))
 
-    print("Product deleted successfully!")
+        connection.commit()
+
+        print("Product deleted successfully!")
+    except ValueError:
+        print("Invalid input. Please enter correct values.")
 
 # Function to view customer orders
 def view_customer_orders():
@@ -67,7 +76,7 @@ def view_customer_orders():
         JOIN customers
             ON orders.customer_id = customers.customer_id
         JOIN products
-            ON order_items.product_id = products.id
+            ON order_items.product_id = products.product_id
     """)
 
     results = cursor.fetchall()
